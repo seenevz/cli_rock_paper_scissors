@@ -4,5 +4,5 @@ def reload
   load "run.rb"
 end
 
-binding.pry
-p "you jumped pry"
+# binding.pry
+# print "you jumped pry"

@@ -3,9 +3,10 @@ require "http"
 require "json"
 require "pry"
 require "bundler"
-require "tty"
-require "tty-box"
-require "tty-screen"
+# require "tty"
+# require "tty-box"
+# require "tty-screen"
+require "cli/ui"
 
 Bundler.require
 

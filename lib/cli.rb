@@ -1,81 +1,56 @@
 require_all "lib"
 
-inner_box = lambda { |params|
-  TTY::Box.frame(
-    width: (TTY::Screen.width) - 2,
-    height: ((TTY::Screen.height) / 2) - 2,
-    align: :center,
-    # padding: 1,
-  ) do
-    binding.pry
-    "Drawing a box in terminal emulator"
-  end
-}
+#system "clear"
 
-inner_box_2 = lambda { |params|
-  TTY::Box.frame(
-    width: (TTY::Screen.width) - 2,
-    height: ((TTY::Screen.height) / 2) - 2,
-    align: :center,
-    # padding: 1,
-  ) do
-    "Drawing a box in terminal emulator again"
-  end
-}
-
-screen_box = lambda { |params|
-  TTY::Box.frame(
-    width: (TTY::Screen.width),
-    height: (TTY::Screen.height),
-    align: :center,
-  ) do
-    binding.pry
-    "#{inner_box.call({ param1: "stuff" })}#{inner_box_2.call}"
-  end
-}
-
-puts screen_box
-# print "\n" * 5
-
-# box_2 = lambda {
+# inner_box = lambda { |params|
 #   TTY::Box.frame(
-#     top: 3,
-#     left: 25,
-#     width: 15,
-#     height: 5,
-#     border: {
-#       type: :thick,
-#       top_left: :divider_down,
-#       bottom_left: :divider_up,
-#     },
+#     width: (TTY::Screen.width) - 2,
+#     height: ((TTY::Screen.height) / 2) - 2,
 #     align: :center,
-#     padding: [1, 2],
-#     style: {
-#       bg: :red,
-#       border: {
-#         bg: :red,
-#       },
-#     },
-#   ) { "Inside of 2" }
+#     # padding: 1,
+#   ) do
+#     "Drawing a box in terminal emulator"
+#   end
 # }
 
-# box_1 = TTY::Box.frame(
-#   top: 3,
-#   left: 10,
-#   width: 15,
-#   height: 5,
-#   border: {
-#     type: :thick,
-#     right: false,
-#   },
-#   align: :center,
-#   padding: [1, 2],
-#   style: {
-#     bg: :red,
-#     border: {
-#       bg: :red,
-#     },
-#   },
-# ) { "#{print box_2.call}" }
+# inner_box_2 = lambda { |params|
+#   TTY::Box.frame(
+#     width: (TTY::Screen.width) - 2,
+#     height: ((TTY::Screen.height) / 2) - 2,
+#     align: :center,
+#     # padding: 1,
+#   ) do
+#     params || ""
+#   end
+# }
 
-# puts box_1
+# screen_box = lambda { |params|
+#   system "clear"
+
+#   TTY::Box.frame(
+#     width: (TTY::Screen.width),
+#     height: (TTY::Screen.height),
+#     align: :center,
+#   ) do
+#     "#{inner_box.call({ param1: "stuff" })}#{inner_box_2.call(params)}"
+#   end
+# }
+
+# prompt = TTY::Prompt.new
+# print screen_box.call('')
+# response = prompt.ask("some stuff here")
+# print screen_box.call(response)
+
+############ UI CLI Gem ######################
+system "clear"
+CLI::UI::StdoutRouter.enable #CLI/UI output router
+
+CLI::UI::Frame.open("Frame 1", timing: nil) do
+  # CLI::UI::Frame.open("Frame 2") { puts "inside frame 2" }
+  # puts "inside frame 1"
+  48.times { puts "" }
+end
+# CLI::UI::Frame.open("Frame 1") do
+#   CLI::UI::Frame.open("Frame 2") { CLI::UI::Prompt.ask("whaaa??") { |handler| handler.option("ttttt") { |sel| sel }; handler.option("yeahhh") { |sel| sel } } }
+#   puts "inside frame 1"
+# end
