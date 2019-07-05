@@ -103,6 +103,7 @@ DEPENDENCIES
   sqlite3
   tty
   tty-box
+  tty-cursor
   tty-prompt
 
 BUNDLED WITH
