@@ -1,4 +1,6 @@
 class InterfaceAdapter
+  attr_reader :prompt
+
   def initialize
     @height = TTY::Screen.height
     @width = TTY::Screen.width
@@ -7,12 +9,15 @@ class InterfaceAdapter
   end
 
   def display_prompt(prompt_inst:, params:)
-    print @cursor.down(10)
+    reply = nil
+    print @cursor.down(7)
     case params[:type]
     when :ask
-      prompt_inst.ask(params[:options])
+      reply = prompt_inst.ask(params[:options])
+      return reply
     when :select
-      display_prompt.select(params[:options])
+      reply = prompt_inst.select(params[:options][:text], params[:options][:choices])
+      return reply
     else
       print "I have nothing to say!"
     end
@@ -20,16 +25,18 @@ class InterfaceAdapter
 
   def display_box(text)
     system "clear"
-    print TTY::Box.frame(
+    box = TTY::Box.frame(
       width: (@width),
       height: ((@height) / 2),
       align: :center,
+      padding: 4,
     ) do
-      text || "I'm feeling tired, maybe we should stop"
+      text || "I'm feeling tired, maybe we should stop..."
     end
+    print box
   end
 
-  def render(params: { box: "I'm empty", prompt: "I'm lost" }, prompt: @prompt)
+  def render(params: { box: "I'm empty", prompt: { type: :ask, options: "I'm lost!" } }, prompt: @prompt)
     display_box(params[:box])
     display_prompt(prompt_inst: prompt, params: params[:prompt])
   end

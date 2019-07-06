@@ -11,4 +11,6 @@ gem 'tty'
 gem 'tty-box'
 gem'tty-prompt'
 gem 'tty-cursor'
-gem 'cli-ui'
+# gem 'cli-ui'gem "rspec"
+gem "activerecord"
+gem "rake"
