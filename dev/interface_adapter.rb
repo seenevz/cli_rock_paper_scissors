@@ -8,7 +8,14 @@ class InterfaceAdapter
 
   def display_prompt(prompt_inst:, params:)
     print @cursor.down(10)
-    prompt_inst.ask(params)
+    case params[:type]
+    when :ask
+      prompt_inst.ask(params[:options])
+    when :select
+      display_prompt.select(params[:options])
+    else
+      print "I have nothing to say!"
+    end
   end
 
   def display_box(text)
