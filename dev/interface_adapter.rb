@@ -12,7 +12,8 @@ class InterfaceAdapter
   end
 
   def display_box(text)
-    TTY::Box.frame(
+    system "clear"
+    print TTY::Box.frame(
       width: (@width),
       height: ((@height) / 2),
       align: :center,
@@ -22,7 +23,6 @@ class InterfaceAdapter
   end
 
   def render(params: { box: "I'm empty", prompt: "I'm lost" }, prompt: @prompt)
-    $stdout.write("\e[2J")
     display_box(params[:box])
     display_prompt(prompt_inst: prompt, params: params[:prompt])
   end
