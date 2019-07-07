@@ -6,7 +6,7 @@ class Cli
     @screen = InterfaceAdapter.new
   end
 
-  def menu(screen)
+  def menu
     game = Game.new
     game.screen = @screen
     game.play
