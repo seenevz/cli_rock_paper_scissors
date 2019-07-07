@@ -73,16 +73,16 @@ class Game < ActiveRecord::Base
   end
 
   def win_screen
-    screen_text = "Well done, you just beat your dad! And just succeeded hearing him insulting you..."
-    prompt_options = { type: :keypress, options: { text: "Press any key to hear the joke" } }
-
+    screen_text = "Well done, you just beat your dad! And succeeded to hearing him insulting you..."
+    prompt_options = { type: :select, options: { text: "Do you really wanna hear your dad insulting you?", choices: ["I have to", "Give me a joke instead"] } }
+    self.win = true
     @screen.render(params: { box: screen_text, prompt: prompt_options })
   end
 
   def loose_screen
-    screen_text = "And as if loosing wasn't enough, you still have to listen to him telling ones of his jokes!"
-    prompt_options = { type: :select, options: { text: "Select your fist:", choices: %w(Rock Paper Scissors) } }
-
+    screen_text = "And as if loosing wasn't enough, you still have to listen to him telling one of his jokes!"
+    prompt_options = { type: :keypress, options: { text: "Press any key to hear the joke" } }
+    self.win = false
     @screen.render(params: { box: screen_text, prompt: prompt_options })
   end
 

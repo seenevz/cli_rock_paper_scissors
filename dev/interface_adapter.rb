@@ -20,6 +20,8 @@ class InterfaceAdapter
       return reply
     when :keypress
       reply = prompt_inst.keypress(params[:options][:text])
+    when :yes
+      reply = prompt_inst.yes?(params[:options][:text])
     else
       print "I have nothing to say!"
     end
