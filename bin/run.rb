@@ -4,5 +4,8 @@ def reload
   load "run.rb"
 end
 
+cli = Cli.new
+
+cli.start
 # binding.pry
 # print "you jumped pry"
