@@ -2,12 +2,14 @@ class Game < ActiveRecord::Base
   belongs_to :user
 
   attr_reader :winner, :state
-  attr_writer :player_choice
+  attr_writer :player_choice, :screen
 
   after_initialize { |game|
     @state = { 'round_1': nil, "round_2": nil, "round_3": nil, 'current_round': 1 }
     @winner = nil
     @player_choice = nil
+    @screen = nil
+    @prompt_options = { type: :select, options: { text: "Select your fist:", choices: %w(Rock Paper Scissors) } }
   }
 
   def draw(choice)
@@ -36,10 +38,61 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def round
+  def determine_round
     result = draw(@player_choice)
     @state["round_#{@state[:current_round].to_s}".to_sym] = result
     find_winner
     @state[:current_round] += 1
+  end
+
+  def play_round(screen_text:)
+    player_answer = @screen.render(params: { box: screen_text, prompt: @prompt_options })
+    @player_choice = player_answer
+
+    reply = self.determine_round
+    reply
+  end
+
+  def round_one
+    screen_text = "It's time for you to face your dad!"
+
+    play_round(screen_text: screen_text)
+  end
+
+  def round_two
+    screen_text = @state[:round_1] ? "Round 2 ! Ready to finish him off?" : "Round 2... Nothing's lost yet!"
+
+    play_round(screen_text: screen_text)
+  end
+
+  def round_three
+    screen_text = @state[:round_2] ? "Round 3! Grab that glory!" : "Round 3! Don't let your dad steal this from you!"
+
+    play_round(screen_text: screen_text)
+    self.winner ? self.win_screen : self.loose_screen
+  end
+
+  def win_screen
+    screen_text = "Well done, you just beat your dad! And just succeeded hearing him insulting you..."
+    prompt_options = { type: :keypress, options: { text: "Press any key to hear the joke" } }
+
+    @screen.render(params: { box: screen_text, prompt: prompt_options })
+  end
+
+  def loose_screen
+    screen_text = "And as if loosing wasn't enough, you still have to listen to him telling ones of his jokes!"
+    prompt_options = { type: :select, options: { text: "Select your fist:", choices: %w(Rock Paper Scissors) } }
+
+    @screen.render(params: { box: screen_text, prompt: prompt_options })
+  end
+
+  def play
+    round_one
+    round_two
+    if self.winner != nil
+      self.winner ? self.win_screen : self.loose_screen
+    else
+      round_three
+    end
   end
 end

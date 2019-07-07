@@ -13,11 +13,13 @@ class InterfaceAdapter
     print @cursor.down(7)
     case params[:type]
     when :ask
-      reply = prompt_inst.ask(params[:options])
+      reply = prompt_inst.ask(params[:options][:text])
       return reply
     when :select
       reply = prompt_inst.select(params[:options][:text], params[:options][:choices])
       return reply
+    when :keypress
+      reply = prompt_inst.keypress(params[:options][:text])
     else
       print "I have nothing to say!"
     end
