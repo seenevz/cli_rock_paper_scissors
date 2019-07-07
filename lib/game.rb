@@ -69,28 +69,14 @@ class Game < ActiveRecord::Base
     screen_text = @state[:round_2] ? "Round 3! Grab that glory!" : "Round 3! Don't let your dad steal this from you!"
 
     play_round(screen_text: screen_text)
-    self.winner ? self.win_screen : self.loose_screen
-  end
-
-  def win_screen
-    screen_text = "Well done, you just beat your dad! And succeeded to hearing him insulting you..."
-    prompt_options = { type: :select, options: { text: "Do you really wanna hear your dad insulting you?", choices: ["I have to", "Give me a joke instead"] } }
-    self.win = true
-    @screen.render(params: { box: screen_text, prompt: prompt_options })
-  end
-
-  def loose_screen
-    screen_text = "And as if loosing wasn't enough, you still have to listen to him telling one of his jokes!"
-    prompt_options = { type: :keypress, options: { text: "Press any key to hear the joke" } }
-    self.win = false
-    @screen.render(params: { box: screen_text, prompt: prompt_options })
+    self.winner ? self.win = true : self.win = false
   end
 
   def play
     round_one
     round_two
     if self.winner != nil
-      self.winner ? self.win_screen : self.loose_screen
+      self.winner ? self.win = true : self.win = false
     else
       round_three
     end

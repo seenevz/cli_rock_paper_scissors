@@ -7,5 +7,7 @@ ActiveRecord::Base.establish_connection(
   :database => "db/development.sqlite",
 )
 
+# ActiveRecord::Base.logger = nil
+
 require_all "dev"
 require_relative "../lib/cli.rb"
