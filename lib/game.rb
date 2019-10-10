@@ -17,11 +17,11 @@ class Game < ActiveRecord::Base
 
     case choice.downcase
     when "rock"
-      return cpu_choice == "paper" ? false : true
+      return {boolean: cpu_choice == "paper" ? false : true, cpu_hand: cpu_choice }
     when "paper"
-      return cpu_choice == "scissors" ? false : true
+      return {boolean: cpu_choice == "scissors" ? false : true, cpu_hand: cpu_choice }
     when "scissors"
-      return cpu_choice == "rock" ? false : true
+      return {boolean: cpu_choice == "rock" ? false : true, cpu_hand: cpu_choice }
     end
   end
 
@@ -43,20 +43,26 @@ class Game < ActiveRecord::Base
     @state["round_#{@state[:current_round].to_s}".to_sym] = result
     find_winner
     @state[:current_round] += 1
+    result
   end
 
   def play_round(screen_text:)
-    player_answer = @screen.render(params: { box: screen_text, prompt: @prompt_options })
-    @player_choice = player_answer
+    @player_choice = @screen.render(params: { box: screen_text, prompt: @prompt_options })
 
-    reply = self.determine_round
+    reply = {cpu_hand: self.determine_round}
     reply
+  end
+
+  def between_round_screen(result)
+    @screen.render(params: {box: 'smth', prompt: {type: :empty}})
+    sleep 1.5
   end
 
   def round_one
     screen_text = "It's time for you to face your dad!"
 
-    play_round(screen_text: screen_text)
+    result = play_round(screen_text: screen_text)
+    between_round_screen(result)
   end
 
   def round_two

@@ -11,6 +11,7 @@ class InterfaceAdapter
   def display_prompt(prompt_inst:, params:)
     reply = nil
     print @cursor.down(7)
+
     case params[:type]
     when :ask
       reply = prompt_inst.ask(params[:options][:text])
@@ -23,7 +24,7 @@ class InterfaceAdapter
     when :yes
       reply = prompt_inst.yes?(params[:options][:text])
     else
-      print "I have nothing to say!"
+      print ""
     end
   end
 
